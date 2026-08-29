@@ -14,7 +14,7 @@ export const dynamic = 'force-dynamic'
 
 const INDUSTRIES = ['FinTech', 'HealthTech', 'Logistics', 'E-Commerce', 'EdTech', 'SaaS', 'Manufacturing', 'Real Estate']
 
-const TECH = ['Next.js', 'React', 'Node.js', 'TypeScript', 'MongoDB', 'PostgreSQL', 'React Native', 'Flutter', 'AWS', 'Docker', 'Kubernetes', 'OpenAI']
+const TECH = ['OpenAI', 'LangChain', 'Python', 'TensorFlow', 'Next.js', 'React', 'Node.js', 'TypeScript', 'MongoDB', 'React Native', 'Flutter', 'AWS']
 
 const STATS = [
   { value: '50+', label: 'Projects shipped' },
@@ -71,14 +71,14 @@ function HeroVisual() {
       {/* Main image frame */}
       <div className="relative card-22 img-zoom overflow-hidden border-[5px] border-white shadow-2xl gold-glow">
         <img
-          src="https://images.unsplash.com/photo-1551434678-e076c223a692?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200"
-          alt="Infynod engineers building software products"
+          src="https://images.unsplash.com/photo-1681164315430-6159b2361615?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200"
+          alt="Indian engineering team at Infynod building AI-powered products"
           className="w-full h-[340px] md:h-[400px] object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
         <div className="absolute bottom-4 left-5 text-white">
-          <p className="text-[11px] text-amber-300" style={{ fontFamily: 'var(--font-mono)' }}>infynod.build( idea )</p>
-          <p className="text-sm font-semibold mt-0.5">From whiteboard to production</p>
+          <p className="text-[11px] text-amber-300" style={{ fontFamily: 'var(--font-mono)' }}>infynod.ai( idea )</p>
+          <p className="text-sm font-semibold mt-0.5">AI products, shipped from Pune</p>
         </div>
       </div>
 
@@ -152,14 +152,14 @@ export default async function HomePage() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-60" />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
                 </span>
-                Available for new projects
+                Available for new AI projects
               </span>
-              <p className="mt-6 section-tag text-amber-700">{settings?.hero_tag || 'Infynod Tech Private Limited · Pune, India'}</p>
+              <p className="mt-6 section-tag text-amber-700">{settings?.hero_tag || 'AI-First Software Development Company · Pune, India'}</p>
               <h1 className="mt-4 text-4xl md:text-6xl font-semibold leading-[1.06] tracking-tight">
-                {settings?.hero_heading || 'We engineer digital products that'} <span className="gold-text-shimmer">{settings?.hero_highlight || 'move business forward'}</span>
+                {settings?.hero_heading || 'We build AI-powered digital products that'} <span className="gold-text-shimmer">{settings?.hero_highlight || 'move business forward'}</span>
               </h1>
               <p className="mt-6 text-lg text-muted-foreground max-w-lg leading-relaxed">
-                {settings?.hero_subtext || 'Custom software, web platforms, mobile apps and AI automation — designed, built and scaled by a team that treats your product like its own.'}
+                {settings?.hero_subtext || 'AI solutions, intelligent automation, custom software, web and mobile apps — designed, built and scaled by an Indian team that treats your product like its own.'}
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-4">
                 <Link href="/contact" className="pill gold-bg text-white font-semibold px-7 py-3.5 inline-flex items-center gap-2 hover:opacity-90 transition-opacity gold-glow" data-testid="hero-cta-primary">
