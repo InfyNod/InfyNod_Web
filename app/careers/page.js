@@ -1,5 +1,5 @@
-import { MapPin, Briefcase, Clock, Mail } from 'lucide-react'
-import { getJobs } from '@/lib/db'
+import { MapPin, Briefcase, Clock, Mail, Phone } from 'lucide-react'
+import { getJobs, getSettings } from '@/lib/db'
 import PageShell from '@/components/site/PageShell'
 import Reveal from '@/components/site/Reveal'
 
@@ -11,7 +11,7 @@ export const metadata = {
 }
 
 export default async function CareersPage() {
-  const jobs = await getJobs()
+  const [jobs, settings] = await Promise.all([getJobs(), getSettings()])
 
   return (
     <PageShell>
@@ -25,6 +25,12 @@ export default async function CareersPage() {
             <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
               Small team, senior standards, real ownership. We hire people who care about craft and give them the space to do great work.
             </p>
+            {settings?.hr_phone && (
+              <p className="mt-5 inline-flex items-center gap-2.5 pill bg-white border border-border px-5 py-2.5 text-sm font-medium" data-testid="careers-hr-phone">
+                <Phone size={15} className="text-amber-600" /> HR & Careers:
+                <a href={`tel:${settings.hr_phone.replace(/\s/g, '')}`} className="font-semibold hover:text-amber-700 transition-colors">{settings.hr_phone}</a>
+              </p>
+            )}
           </div>
           <div className="card-22 img-zoom overflow-hidden border-[5px] border-white shadow-2xl gold-glow">
             <img

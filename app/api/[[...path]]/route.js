@@ -6,7 +6,7 @@ import { signToken, getAuthUser } from '@/lib/auth'
 
 export const dynamic = 'force-dynamic'
 
-const CRUD_COLLECTIONS = ['services', 'projects', 'team', 'jobs', 'blog', 'settings', 'leads']
+const CRUD_COLLECTIONS = ['services', 'projects', 'team', 'jobs', 'blog', 'settings', 'leads', 'testimonials', 'faqs', 'process_steps']
 
 function json(data, status = 200) {
   return NextResponse.json(data, { status })

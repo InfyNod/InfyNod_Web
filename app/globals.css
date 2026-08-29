@@ -46,13 +46,15 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body), sans-serif;
+    font-size: 16px;
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading), sans-serif;
     font-weight: 600;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
   }
 
   html {
@@ -90,9 +92,10 @@
 }
 
 .section-tag {
-  font-family: var(--font-mono), monospace;
-  font-size: 0.75rem;
-  letter-spacing: 0.2em;
+  font-family: var(--font-body), sans-serif;
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
 }
 

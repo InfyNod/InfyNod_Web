@@ -194,16 +194,14 @@ frontend:
 metadata:
   created_by: "main_agent"
   version: "1.0"
-  test_sequence: 2
+  test_sequence: 3
   run_ui: false
 
 test_plan:
   current_focus:
-    - "Admin JWT auth (login, me, change-password)"
-    - "Public lead submission with validation, honeypot, rate limit"
-    - "Admin CRUD for services/projects/team/jobs/blog/leads/settings"
+    - "Admin-editable home content: testimonials/faqs/process_steps collections + extended settings"
   stuck_tasks: []
-  test_all: true
+  test_all: false
   test_priority: "high_first"
 
 agent_communication:
@@ -232,3 +230,45 @@ agent_communication:
       message: "User approved frontend testing. Test: home 13 sections render + images load, planner interaction (select type/features/scale, estimate updates, 'Discuss this plan' scrolls to contact & prefills message), contact form submit -> success message, admin login (admin@infynod.com/Infynod@2025) -> leads visible incl. planner lead, CRUD works (create+edit+delete a test service), settings save. NOTE: lead POST rate limit 5 per 10 min per IP - submit max 2-3 leads total. Do not permanently change admin password."
     - agent: "testing"
       message: "✅ FRONTEND TESTING COMPLETE - ALL MAJOR FUNCTIONALITY WORKING. Tested and verified: (1) Home page - all 13 sections render with images, hero elements, service cards, project cards with images, team cards, testimonials, blog cards with cover images, FAQ items. (2) Project planner - interactive selections update estimate correctly (6-8 → 8-10 → 10-13 → 20-25 weeks), CTA scrolls to contact and pre-fills message with planner details. (3) Contact form - submission successful, lead saved with planner selections. (4) Inner pages - all routes working (services detail, about, careers, blog, blog post, contact, privacy, terms). (5) Admin panel - login error handling works, dashboard loads, leads tab shows submitted lead with planner data, status change to 'contacted' works, lead expansion shows full details. (6) Services CRUD - create/update/delete cycle completed successfully (6 → 7 → 6 services). (7) Settings - phone number loads correctly, save shows success message. Only 1 lead submitted (within rate limit). Minor issue: Logout button blocked by Next.js dev overlay in test environment (not a production concern). No critical issues found. Website is production-ready."
+
+  - task: "Admin-editable home content: testimonials/faqs/process_steps collections + extended settings"
+    implemented: true
+    working: true
+    file: "/app/app/api/[[...path]]/route.js, /app/lib/db.js, /app/app/admin/page.js, /app/app/page.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Added testimonials/faqs/process_steps to CRUD_COLLECTIONS with public GET (sorted by order) + admin CRUD. Settings extended with hero_tag/hero_heading/hero_highlight/hero_subtext/industries[]/tech_stack[]/stats[]. Home page now reads all this from DB with fallbacks. Migrated existing DB via /app/scripts/migrate.js. Admin panel has 3 new tabs + expanded Settings form."
+        - working: true
+          agent: "testing"
+          comment: "✅ ALL NEW FEATURE TESTS PASSED (13/13): NEW PUBLIC GETs - GET /testimonials returns exactly 3 items with id/quote/name/company/order, sorted by order asc (1,2,3), no _id field. GET /faqs returns 5 items with question/answer/order. GET /process_steps returns 5 items with title/text/order in correct sequence (Discover, Design, Build, Launch, Scale). GET /settings includes all extended fields: hero_tag, hero_heading ('We engineer digital products that'), hero_highlight, hero_subtext, industries array (8 items), tech_stack array (12 items), stats array (4 objects with value/label). NEW ADMIN CRUD - Full create/update/delete cycle tested for testimonials (created with quote 'Test quote for QA purposes', updated name to 'QA Tester 2', deleted, count verified back to 3). Full CRUD cycle for faqs (created, updated answer, deleted, count back to 5). Full CRUD cycle for process_steps (created, updated title, deleted, count back to 5). Unauthenticated POST/PUT/DELETE on all 3 new collections correctly return 401. EXTENDED SETTINGS ROUND-TRIP - GET current settings, PUT with hero_highlight changed to 'test highlight QA', verified change persisted, PUT back to original 'move business forward', verified restoration. All arrays (industries/tech_stack/stats) survived round-trip intact. REGRESSION CHECK - Auth login works, GET /services returns 6, GET /projects returns 5, lead submission works (submitted and deleted 1 lead). All existing endpoints working correctly. No issues found."
+
+agent_communication:
+    - agent: "main"
+      message: "User requested all home content editable from admin. Test new backend: GET /api/testimonials (3), /api/faqs (5), /api/process_steps (5) public; admin CRUD on them; PUT /api/settings with extended fields (hero_heading, industries array, stats array of {value,label}) persists and returns on GET. Clean up any test items created. Do not change admin password permanently. Lead rate limit still 5/10min per IP."
+    - agent: "testing"
+      message: "✅ NEW FEATURE TESTING COMPLETE - ALL 22 TESTS PASSED (100% success rate). Tested: (1) NEW PUBLIC GETs - /testimonials (3 items with id/quote/name/company/order, sorted by order, no _id), /faqs (5 items with question/answer/order), /process_steps (5 items: Discover/Design/Build/Launch/Scale with title/text/order), /settings extended fields (hero_tag, hero_heading='We engineer digital products that', hero_highlight, hero_subtext, industries[8], tech_stack[12], stats[4 with value/label]). (2) NEW ADMIN CRUD - Full create/update/delete cycles for testimonials (quote='Test quote for QA purposes', name updated to 'QA Tester 2', deleted, count back to 3), faqs (created/updated answer/deleted, count back to 5), process_steps (created/updated title/deleted, count back to 5). Unauthenticated POST/PUT/DELETE on all 3 collections return 401. (3) EXTENDED SETTINGS ROUND-TRIP - hero_highlight changed to 'test highlight QA', verified, restored to 'move business forward', verified. All arrays (industries/tech_stack/stats) survived round-trip intact. (4) REGRESSION - Auth login works, /services returns 6, /projects returns 5, lead submission works (1 lead submitted & deleted). All test data cleaned up. No issues found."
+
+  - task: "Design v3: richer service pages, better hero, simpler typography, HR phone"
+    implemented: true
+    working: true
+    file: "/app/app/services/[slug]/page.js, /app/app/page.js, /app/app/contact/page.js, /app/app/careers/page.js, /app/app/admin/page.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Service pages: breadcrumb, outcomes dark card, tools pills, engagement models, CTA banner (services now have tools/outcomes arrays in DB, editable in admin). Hero: availability badge + 5-star trust row + glow blob. section-tag font simplified from mono to Manrope. Contact page: labeled contact methods + HR & Careers phone (+91 92720 03735, settings.hr_phone, admin-editable). Careers page HR phone pill."
+        - working: true
+          agent: "testing"
+          comment: "✅ COMPREHENSIVE FRONTEND UI TEST COMPLETE - ALL TESTS PASSED (100% success). HOME PAGE: All 13 sections render correctly (hero, trustbar, services, process, projects, planner, tech, stats, team, testimonials, blog, faq, contact). Hero section verified: availability badge 'Available for new projects', h1 'We engineer digital products that move business forward', trust row with 5 stars + 'Trusted by 30+ clients', hero image + floating stat chips (95+, 50+ projects, delivery velocity chart) all visible. Testimonials: 3 items from DB. FAQs: 5 items from DB. PROJECT PLANNER: Interactive functionality working perfectly - selecting Mobile App type shows 8-10 weeks, adding 2 features (Admin dashboard + Payments & billing) increases to 10-13 weeks, selecting Enterprise scale increases to 20-25 weeks. 'Discuss this plan' CTA scrolls to contact section, pre-fills message with planner details (182 chars: 'Hi, I used the project planner. Project: Mobile App (Enterprise) Features: Admin dashboard, Payments & billing...'), planner note visible. CONTACT FORM: Submitted successfully with name 'UI Test Round2', email 'uitest2@example.com', success message displayed. SERVICE DETAIL (/services/ai-automation): Service title 'AI & Automation' correct, outcomes dark card visible with 4 checkmarks, tools section shows 8 pills (OpenAI, Claude, etc.), engagement models section shows 3 cards (Fixed Scope, Dedicated Team, Support & Maintenance), CTA banner + 'Call +91 97653 03735' button visible. CONTACT PAGE: Business phone '+91 97653 03735' displayed, HR & Careers phone '+91 92720 03735' displayed, email 'info@infynod.com', address 'Pune, Maharashtra, India', form renders correctly. CAREERS PAGE: HR phone pill shows '+91 92720 03735', 3 job cards visible. ADMIN PANEL: Login successful with admin@infynod.com/Infynod@2025. TESTIMONIALS TAB: Initial count 3, added new testimonial (quote 'QA test quote here', name 'QA Person', company 'QA Co', order 99) → count 4, deleted test testimonial → count back to 3. FAQS TAB: 5 rows visible. PROCESS STEPS TAB: 5 rows visible. LEADS TAB: 'UI Test Round2' lead found with planner selections (Mobile App, Enterprise scale detected), expanded to verify planner details, deleted successfully. SETTINGS TAB: All fields verified - Phone: +91 97653 03735, HR Phone: +91 92720 03735, Email: info@infynod.com, Address: Pune, Maharashtra, India, Hero heading: 'We engineer digital products that', Hero highlight: 'move business forward', Industries: 8 items, Tech stack: 12 items, Stats: 4 items. CONTENT REFLECTION TEST 1 (Hero Highlight): Edited to 'QA verified highlight', saved, verified on home page (change reflected), restored to 'move business forward', verified restoration. CONTENT REFLECTION TEST 2 (FAQ): Edited first FAQ question to 'How do you price projects? (QA)', saved, verified on home page (change reflected with '(QA)' visible), restored to original 'How do you price projects?', verified restoration. All test data cleaned up, original values restored, admin password unchanged. Only 1 lead submitted (within rate limit). No critical issues found. Website fully functional and production-ready."
+
+agent_communication:
+    - agent: "main"
+      message: "User approved frontend testing. Full UI test needed: (1) home hero (availability badge, trust row, image+chips), planner flow, contact submit; (2) NEW admin tabs Testimonials/FAQs/Process Steps CRUD + edit reflects on home page after reload; (3) Settings extended form (hero heading, HR phone) saves and reflects on site; (4) service detail page shows outcomes card + tools + engagement models; (5) contact page shows HR & Careers +91 92720 03735; careers page HR pill. Constraints: max 2 lead submissions (rate limit 5/10min), don't change admin password permanently, restore any content you edit (e.g., hero heading) to original after verifying."
+    - agent: "testing"
+      message: "✅ COMPREHENSIVE FRONTEND UI TESTING COMPLETE - ALL TESTS PASSED (100% success rate). Tested and verified: (1) HOME PAGE - All 13 sections render, hero availability badge + trust row with 5 stars + heading + image + floating chips visible, 3 testimonials from DB, 5 FAQs from DB. (2) PROJECT PLANNER - Interactive selections work perfectly (8-10 → 10-13 → 20-25 weeks), CTA scrolls to contact and pre-fills message with planner details, planner note visible. (3) CONTACT FORM - Submission successful with 'UI Test Round2' lead. (4) SERVICE DETAIL - AI & Automation page shows outcomes card (4 checkmarks), 8 tools pills, 3 engagement cards, CTA banner, phone button. (5) CONTACT PAGE - Business phone +91 97653 03735, HR phone +91 92720 03735, email, address all displayed. (6) CAREERS PAGE - HR phone pill +91 92720 03735, 3 job cards visible. (7) ADMIN PANEL - Login successful, Testimonials CRUD (3→4→3), FAQs tab (5 rows), Process Steps tab (5 rows), Leads tab (test lead found with planner selections and deleted), Settings tab (all fields verified: phones, hero heading, industries 8 items, tech stack 12 items, stats 4 items). (8) CONTENT REFLECTION - Hero highlight edit reflected on home page (tested: edit → verify → restore), FAQ edit reflected on home page (tested: edit → verify → restore). Only 1 lead submitted (within rate limit). All test data cleaned up, original values restored, admin password unchanged. No critical issues found. Website is production-ready."

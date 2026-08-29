@@ -28,15 +28,33 @@ export default async function ContactPage() {
             <ul className="mt-9 space-y-4">
               <li className="flex items-center gap-3.5">
                 <span className="w-11 h-11 rounded-2xl gold-bg text-white flex items-center justify-center shrink-0"><Phone size={18} /></span>
-                <a href={`tel:${(settings?.phone || '').replace(/\s/g, '')}`} className="text-sm font-medium hover:text-amber-700 transition-colors" data-testid="contact-page-phone">{settings?.phone}</a>
+                <div>
+                  <p className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">Business enquiries</p>
+                  <a href={`tel:${(settings?.phone || '').replace(/\s/g, '')}`} className="text-sm font-medium hover:text-amber-700 transition-colors" data-testid="contact-page-phone">{settings?.phone}</a>
+                </div>
               </li>
+              {settings?.hr_phone && (
+                <li className="flex items-center gap-3.5">
+                  <span className="w-11 h-11 rounded-2xl bg-foreground text-white flex items-center justify-center shrink-0"><Phone size={18} /></span>
+                  <div>
+                    <p className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">HR & Careers</p>
+                    <a href={`tel:${(settings.hr_phone || '').replace(/\s/g, '')}`} className="text-sm font-medium hover:text-amber-700 transition-colors" data-testid="contact-page-hr-phone">{settings.hr_phone}</a>
+                  </div>
+                </li>
+              )}
               <li className="flex items-center gap-3.5">
                 <span className="w-11 h-11 rounded-2xl gold-bg text-white flex items-center justify-center shrink-0"><Mail size={18} /></span>
-                <a href={`mailto:${settings?.email}`} className="text-sm font-medium hover:text-amber-700 transition-colors" data-testid="contact-page-email">{settings?.email}</a>
+                <div>
+                  <p className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">Email</p>
+                  <a href={`mailto:${settings?.email}`} className="text-sm font-medium hover:text-amber-700 transition-colors" data-testid="contact-page-email">{settings?.email}</a>
+                </div>
               </li>
               <li className="flex items-center gap-3.5">
                 <span className="w-11 h-11 rounded-2xl gold-bg text-white flex items-center justify-center shrink-0"><MapPin size={18} /></span>
-                <span className="text-sm font-medium" data-testid="contact-page-address">{settings?.address}</span>
+                <div>
+                  <p className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">Office</p>
+                  <span className="text-sm font-medium" data-testid="contact-page-address">{settings?.address}</span>
+                </div>
               </li>
             </ul>
           </div>

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, useCallback } from 'react'
-import { Inbox, Layers, FolderKanban, Users, Briefcase, FileText, Settings as SettingsIcon, LogOut, Plus, Pencil, Trash2, X, Loader2, ChevronDown, ChevronUp } from 'lucide-react'
+import { Inbox, Layers, FolderKanban, Users, Briefcase, FileText, Settings as SettingsIcon, LogOut, Plus, Pencil, Trash2, X, Loader2, ChevronDown, ChevronUp, Quote, HelpCircle, ListOrdered } from 'lucide-react'
 import Logo from '@/components/site/Logo'
 
 // ---------- collection field configs ----------
@@ -14,6 +14,8 @@ const CONFIGS = {
       { key: 'tagline', label: 'Tagline', type: 'text' },
       { key: 'description', label: 'Description', type: 'textarea' },
       { key: 'features', label: 'Features (one per line)', type: 'array' },
+      { key: 'tools', label: 'Tools & technologies (one per line)', type: 'array' },
+      { key: 'outcomes', label: 'Outcomes / What you get (one per line)', type: 'array' },
       { key: 'icon', label: 'Icon (code/globe/smartphone/pen/cloud/sparkles)', type: 'text' },
       { key: 'order', label: 'Order', type: 'number' },
       { key: 'active', label: 'Active', type: 'checkbox' },
@@ -68,6 +70,34 @@ const CONFIGS = {
       { key: 'published', label: 'Published', type: 'checkbox' },
     ],
     columns: ['title', 'slug', 'published'],
+  },
+  testimonials: {
+    label: 'Testimonials', icon: Quote,
+    fields: [
+      { key: 'quote', label: 'Quote', type: 'textarea' },
+      { key: 'name', label: 'Name / Designation', type: 'text' },
+      { key: 'company', label: 'Company', type: 'text' },
+      { key: 'order', label: 'Order', type: 'number' },
+    ],
+    columns: ['name', 'company', 'order'],
+  },
+  faqs: {
+    label: 'FAQs', icon: HelpCircle,
+    fields: [
+      { key: 'question', label: 'Question', type: 'text' },
+      { key: 'answer', label: 'Answer', type: 'textarea' },
+      { key: 'order', label: 'Order', type: 'number' },
+    ],
+    columns: ['question', 'order'],
+  },
+  process_steps: {
+    label: 'Process Steps', icon: ListOrdered,
+    fields: [
+      { key: 'title', label: 'Stage title', type: 'text' },
+      { key: 'text', label: 'Stage description', type: 'textarea' },
+      { key: 'order', label: 'Order', type: 'number' },
+    ],
+    columns: ['title', 'order'],
   },
 }
 
@@ -367,7 +397,7 @@ function CrudPanel({ collection, token, onAuthError }) {
 
 // ---------- Settings ----------
 function SettingsPanel({ token, onAuthError }) {
-  const [form, setForm] = useState({ phone: '', email: '', address: '' })
+  const [form, setForm] = useState({ phone: '', hr_phone: '', email: '', address: '', hero_tag: '', hero_heading: '', hero_highlight: '', hero_subtext: '', industries: '', tech_stack: '', stats: '' })
   const [pw, setPw] = useState({ current_password: '', new_password: '' })
   const [msg, setMsg] = useState('')
   const [pwMsg, setPwMsg] = useState('')
@@ -375,7 +405,23 @@ function SettingsPanel({ token, onAuthError }) {
 
   useEffect(() => {
     api('settings', { token })
-      .then((d) => { if (d.item) setForm({ phone: d.item.phone || '', email: d.item.email || '', address: d.item.address || '' }) })
+      .then((d) => {
+        if (d.item) {
+          setForm({
+            phone: d.item.phone || '',
+            hr_phone: d.item.hr_phone || '',
+            email: d.item.email || '',
+            address: d.item.address || '',
+            hero_tag: d.item.hero_tag || '',
+            hero_heading: d.item.hero_heading || '',
+            hero_highlight: d.item.hero_highlight || '',
+            hero_subtext: d.item.hero_subtext || '',
+            industries: (d.item.industries || []).join('\n'),
+            tech_stack: (d.item.tech_stack || []).join('\n'),
+            stats: (d.item.stats || []).map((s) => `${s.value} | ${s.label}`).join('\n'),
+          })
+        }
+      })
       .catch((e) => { if (String(e.message).includes('Unauthorized')) onAuthError() })
       .finally(() => setLoading(false))
   }, [token, onAuthError])
@@ -383,8 +429,25 @@ function SettingsPanel({ token, onAuthError }) {
   const save = async (e) => {
     e.preventDefault()
     setMsg('')
+    const toLines = (s) => String(s).split('\n').map((x) => x.trim()).filter(Boolean)
+    const body = {
+      phone: form.phone,
+      hr_phone: form.hr_phone,
+      email: form.email,
+      address: form.address,
+      hero_tag: form.hero_tag,
+      hero_heading: form.hero_heading,
+      hero_highlight: form.hero_highlight,
+      hero_subtext: form.hero_subtext,
+      industries: toLines(form.industries),
+      tech_stack: toLines(form.tech_stack),
+      stats: toLines(form.stats).map((line) => {
+        const [value, ...rest] = line.split('|')
+        return { value: (value || '').trim(), label: rest.join('|').trim() }
+      }).filter((s) => s.value && s.label),
+    }
     try {
-      await api('settings', { method: 'PUT', token, body: form })
+      await api('settings', { method: 'PUT', token, body })
       setMsg('Settings saved!')
     } catch (err) { setMsg(err.message) }
   }
@@ -402,24 +465,70 @@ function SettingsPanel({ token, onAuthError }) {
   if (loading) return <div className="p-10 text-center text-muted-foreground"><Loader2 className="animate-spin mx-auto" /></div>
 
   return (
-    <div className="max-w-lg space-y-8" data-testid="admin-settings-panel">
+    <div className="max-w-2xl space-y-8" data-testid="admin-settings-panel">
       <form onSubmit={save} className="card-22 bg-white border border-border p-7">
-        <h2 className="text-lg font-semibold mb-5">Site settings</h2>
-        <div className="space-y-4">
+        <h2 className="text-lg font-semibold mb-1">Contact details</h2>
+        <p className="text-xs text-muted-foreground mb-5">Shown in header, footer and contact sections</p>
+        <div className="grid md:grid-cols-2 gap-4">
           <div>
-            <label className="text-xs font-semibold text-foreground/70 mb-1.5 block">Phone</label>
+            <label className="text-xs font-semibold text-foreground/70 mb-1.5 block">Phone (business)</label>
             <input value={form.phone} onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))} className={inputCls} data-testid="settings-phone" />
+          </div>
+          <div>
+            <label className="text-xs font-semibold text-foreground/70 mb-1.5 block">HR & Careers phone</label>
+            <input value={form.hr_phone} onChange={(e) => setForm((p) => ({ ...p, hr_phone: e.target.value }))} className={inputCls} data-testid="settings-hr-phone" />
           </div>
           <div>
             <label className="text-xs font-semibold text-foreground/70 mb-1.5 block">Email</label>
             <input value={form.email} onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))} className={inputCls} data-testid="settings-email" />
           </div>
-          <div>
+          <div className="md:col-span-2">
             <label className="text-xs font-semibold text-foreground/70 mb-1.5 block">Address</label>
             <input value={form.address} onChange={(e) => setForm((p) => ({ ...p, address: e.target.value }))} className={inputCls} data-testid="settings-address" />
           </div>
         </div>
-        {msg && <p className="mt-3 text-xs text-amber-700" data-testid="settings-msg">{msg}</p>}
+
+        <h2 className="text-lg font-semibold mb-1 mt-8">Home hero section</h2>
+        <p className="text-xs text-muted-foreground mb-5">Main heading area on the home page</p>
+        <div className="space-y-4">
+          <div>
+            <label className="text-xs font-semibold text-foreground/70 mb-1.5 block">Small tag line (above heading)</label>
+            <input value={form.hero_tag} onChange={(e) => setForm((p) => ({ ...p, hero_tag: e.target.value }))} className={inputCls} data-testid="settings-hero-tag" />
+          </div>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label className="text-xs font-semibold text-foreground/70 mb-1.5 block">Heading (black part)</label>
+              <input value={form.hero_heading} onChange={(e) => setForm((p) => ({ ...p, hero_heading: e.target.value }))} className={inputCls} data-testid="settings-hero-heading" />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-foreground/70 mb-1.5 block">Heading highlight (gold part)</label>
+              <input value={form.hero_highlight} onChange={(e) => setForm((p) => ({ ...p, hero_highlight: e.target.value }))} className={inputCls} data-testid="settings-hero-highlight" />
+            </div>
+          </div>
+          <div>
+            <label className="text-xs font-semibold text-foreground/70 mb-1.5 block">Sub-text (below heading)</label>
+            <textarea rows={3} value={form.hero_subtext} onChange={(e) => setForm((p) => ({ ...p, hero_subtext: e.target.value }))} className={inputCls} data-testid="settings-hero-subtext" />
+          </div>
+        </div>
+
+        <h2 className="text-lg font-semibold mb-1 mt-8">Home page lists</h2>
+        <p className="text-xs text-muted-foreground mb-5">One item per line</p>
+        <div className="grid md:grid-cols-2 gap-4">
+          <div>
+            <label className="text-xs font-semibold text-foreground/70 mb-1.5 block">Industries (scrolling bar)</label>
+            <textarea rows={8} value={form.industries} onChange={(e) => setForm((p) => ({ ...p, industries: e.target.value }))} className={inputCls} data-testid="settings-industries" />
+          </div>
+          <div>
+            <label className="text-xs font-semibold text-foreground/70 mb-1.5 block">Tech stack badges</label>
+            <textarea rows={8} value={form.tech_stack} onChange={(e) => setForm((p) => ({ ...p, tech_stack: e.target.value }))} className={inputCls} data-testid="settings-tech-stack" />
+          </div>
+          <div className="md:col-span-2">
+            <label className="text-xs font-semibold text-foreground/70 mb-1.5 block">Stats — format: value | label (e.g. 50+ | Projects shipped)</label>
+            <textarea rows={4} value={form.stats} onChange={(e) => setForm((p) => ({ ...p, stats: e.target.value }))} className={inputCls} data-testid="settings-stats" />
+          </div>
+        </div>
+
+        {msg && <p className="mt-4 text-xs text-amber-700" data-testid="settings-msg">{msg}</p>}
         <button type="submit" className="mt-5 pill gold-bg text-white text-sm font-semibold px-6 py-2.5 hover:opacity-90" data-testid="settings-save">Save settings</button>
       </form>
 

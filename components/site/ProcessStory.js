@@ -3,15 +3,18 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Search, PenTool, Hammer, Rocket, TrendingUp } from 'lucide-react'
 
-const STEPS = [
-  { icon: Search, title: 'Discover', text: 'We start with a deep-dive workshop — your goals, users, constraints and success metrics. You get a clear scope document and technical blueprint before any code is written.' },
-  { icon: PenTool, title: 'Design', text: 'Wireframes become clickable prototypes within days. We test flows with real users and lock a pixel-perfect design system your product can grow with.' },
-  { icon: Hammer, title: 'Build', text: 'Weekly sprints, weekly demos. You watch the product take shape in a staging environment — no black boxes, no surprises at the end.' },
-  { icon: Rocket, title: 'Launch', text: 'Hardening, performance passes, analytics and error tracking wired in. We ship to production with rollback plans and zero-drama deployments.' },
-  { icon: TrendingUp, title: 'Scale', text: 'Post-launch, we monitor, iterate and optimise. New features ship on a predictable cadence while infrastructure scales with your traffic.' },
+const ICONS = [Search, PenTool, Hammer, Rocket, TrendingUp]
+
+const DEFAULT_STEPS = [
+  { title: 'Discover', text: 'We start with a deep-dive workshop — your goals, users, constraints and success metrics. You get a clear scope document and technical blueprint before any code is written.' },
+  { title: 'Design', text: 'Wireframes become clickable prototypes within days. We test flows with real users and lock a pixel-perfect design system your product can grow with.' },
+  { title: 'Build', text: 'Weekly sprints, weekly demos. You watch the product take shape in a staging environment — no black boxes, no surprises at the end.' },
+  { title: 'Launch', text: 'Hardening, performance passes, analytics and error tracking wired in. We ship to production with rollback plans and zero-drama deployments.' },
+  { title: 'Scale', text: 'Post-launch, we monitor, iterate and optimise. New features ship on a predictable cadence while infrastructure scales with your traffic.' },
 ]
 
-export default function ProcessStory() {
+export default function ProcessStory({ steps }) {
+  const STEPS = (steps && steps.length ? steps : DEFAULT_STEPS).map((s, i) => ({ ...s, icon: ICONS[i % ICONS.length] }))
   const [active, setActive] = useState(0)
   const refs = useRef([])
 

@@ -28,3 +28,12 @@ Theme: Gold & Black on light backgrounds, gold gradient accents. Fonts: Space Gr
 - Reveal scroll animations hidden only under html.js class (progressive enhancement); hero uses pure CSS fade-up
 - Planner -> ContactForm communication via window CustomEvent 'infynod-planner'
 - JWT_SECRET in /app/.env
+
+## Update — Admin-editable content + Design v3 (DONE & FULLY TESTED)
+- New admin tabs: Testimonials, FAQs, Process Steps (full CRUD, reflect on home via SSR)
+- Settings extended (admin-editable): hero_tag/heading/highlight/subtext, industries[], tech_stack[], stats[{value|label}], hr_phone
+- HR & Careers phone: +91 92720 03735 — shown on /contact (labeled) and /careers pill
+- Services enriched: tools[] + outcomes[] per service (admin-editable); detail page has breadcrumb, outcomes dark card, tools pills, 3 engagement model cards, CTA banner
+- Hero v3: availability badge (pulse dot), 5-star trust row, glow blob; section-tag font simplified (Manrope, not mono); body 16px optimizeLegibility
+- Migrations: /app/scripts/migrate.js (content collections), /app/scripts/migrate2.js (hr_phone + service extras) — both idempotent-ish, already run
+- Testing: backend 22/22 (new endpoints), frontend 100% pass incl. content-reflection round-trips

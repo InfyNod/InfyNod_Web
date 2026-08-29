@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { ArrowRight, ArrowUpRight, Phone, Mail, MapPin, Quote } from 'lucide-react'
-import { getServices, getProjects, getTeam, getBlogPosts, getSettings } from '@/lib/db'
+import { ArrowRight, ArrowUpRight, Phone, Mail, MapPin, Quote, Star } from 'lucide-react'
+import { getServices, getProjects, getTeam, getBlogPosts, getSettings, getTestimonials, getFaqs, getProcessSteps } from '@/lib/db'
 import Nav from '@/components/site/Nav'
 import Footer from '@/components/site/Footer'
 import Reveal from '@/components/site/Reveal'
@@ -44,6 +44,8 @@ function SectionTag({ num, label }) {
 function HeroVisual() {
   return (
     <div className="relative w-full max-w-[540px] mx-auto mt-6 md:mt-0" aria-hidden="true">
+      {/* Gold glow blob */}
+      <div className="absolute -inset-10 -z-10 rounded-full bg-[radial-gradient(circle,rgba(212,160,23,0.22),transparent_65%)] blur-2xl" />
       {/* Orbit rings behind */}
       <div className="absolute -inset-10 opacity-70 pointer-events-none">
         <svg viewBox="0 0 400 400" className="w-full h-full">
@@ -105,13 +107,23 @@ function HeroVisual() {
 }
 
 export default async function HomePage() {
-  const [services, projects, team, posts, settings] = await Promise.all([
+  const [services, projects, team, posts, settings, testimonials, faqs, processSteps] = await Promise.all([
     getServices(),
     getProjects(),
     getTeam(),
     getBlogPosts(3),
     getSettings(),
+    getTestimonials(),
+    getFaqs(),
+    getProcessSteps(),
   ])
+
+  // Admin-editable content with safe fallbacks
+  const industries = settings?.industries?.length ? settings.industries : INDUSTRIES
+  const tech = settings?.tech_stack?.length ? settings.tech_stack : TECH
+  const stats = settings?.stats?.length ? settings.stats : STATS
+  const testimonialList = testimonials?.length ? testimonials : TESTIMONIALS
+  const faqList = faqs?.length ? faqs.map((f) => ({ q: f.question, a: f.answer })) : FAQS
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -135,12 +147,19 @@ export default async function HomePage() {
           <div className="absolute inset-0 -z-10 hero-grid-bg" />
           <div className="container grid md:grid-cols-2 gap-14 items-center">
             <div className="animate-fade-up">
-              <p className="section-tag text-amber-700">Infynod Tech Private Limited · Pune, India</p>
-              <h1 className="mt-5 text-4xl md:text-6xl font-semibold leading-[1.08] tracking-tight">
-                We engineer digital products that <span className="gold-text-shimmer">move business forward</span>
+              <span className="inline-flex items-center gap-2.5 pill bg-white border border-border px-4 py-2 text-xs font-semibold text-foreground/75 shadow-sm" data-testid="hero-availability">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-60" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+                </span>
+                Available for new projects
+              </span>
+              <p className="mt-6 section-tag text-amber-700">{settings?.hero_tag || 'Infynod Tech Private Limited · Pune, India'}</p>
+              <h1 className="mt-4 text-4xl md:text-6xl font-semibold leading-[1.06] tracking-tight">
+                {settings?.hero_heading || 'We engineer digital products that'} <span className="gold-text-shimmer">{settings?.hero_highlight || 'move business forward'}</span>
               </h1>
               <p className="mt-6 text-lg text-muted-foreground max-w-lg leading-relaxed">
-                Custom software, web platforms, mobile apps and AI automation — designed, built and scaled by a team that treats your product like its own.
+                {settings?.hero_subtext || 'Custom software, web platforms, mobile apps and AI automation — designed, built and scaled by a team that treats your product like its own.'}
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-4">
                 <Link href="/contact" className="pill gold-bg text-white font-semibold px-7 py-3.5 inline-flex items-center gap-2 hover:opacity-90 transition-opacity gold-glow" data-testid="hero-cta-primary">
@@ -149,6 +168,20 @@ export default async function HomePage() {
                 <Link href="/#planner" className="pill border border-foreground/20 font-semibold px-7 py-3.5 inline-flex items-center gap-2 hover:bg-secondary transition-colors" data-testid="hero-cta-secondary">
                   Try the project planner
                 </Link>
+              </div>
+              <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-muted-foreground" data-testid="hero-trust-row">
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="flex items-center">
+                    {[0, 1, 2, 3, 4].map((i) => (
+                      <Star key={i} size={14} className="text-amber-500 fill-amber-500" />
+                    ))}
+                  </span>
+                  <span className="font-semibold text-foreground/80">Trusted by 30+ clients</span>
+                </span>
+                <span className="hidden sm:inline text-border">|</span>
+                <span>50+ products launched</span>
+                <span className="hidden sm:inline text-border">|</span>
+                <span>Based in Pune, India</span>
               </div>
             </div>
             <div className="animate-fade-up-delay">
@@ -160,7 +193,7 @@ export default async function HomePage() {
         {/* 02 — TRUST BAR */}
         <section className="border-y border-border bg-white/60 py-5 overflow-hidden" data-testid="section-trustbar">
           <div className="flex whitespace-nowrap marquee-track w-max">
-            {[...INDUSTRIES, ...INDUSTRIES].map((ind, i) => (
+            {[...industries, ...industries].map((ind, i) => (
               <span key={i} className="mx-8 inline-flex items-center gap-3 text-sm font-medium text-foreground/50">
                 <span className="w-1.5 h-1.5 rounded-full gold-bg inline-block" /> {ind}
               </span>
@@ -199,7 +232,7 @@ export default async function HomePage() {
         {/* 04 — PROCESS STORY (scroll-driven) */}
         <section id="process" className="py-20 md:py-28 bg-white border-y border-border scroll-mt-24" data-testid="section-process">
           <div className="container">
-            <ProcessStory />
+            <ProcessStory steps={processSteps} />
           </div>
         </section>
 
@@ -269,7 +302,7 @@ export default async function HomePage() {
             </Reveal>
             <Reveal delay={100}>
               <div className="mt-12 flex flex-wrap gap-3">
-                {TECH.map((t) => (
+                {tech.map((t) => (
                   <span key={t} className="pill bg-white border border-border px-5 py-2.5 text-sm font-medium hover:border-amber-500/50 transition-colors" style={{ fontFamily: 'var(--font-mono)' }}>
                     {t}
                   </span>
@@ -282,7 +315,7 @@ export default async function HomePage() {
         {/* 08 — STATS */}
         <section className="py-16 md:py-20 bg-[#0d0c09] text-white" data-testid="section-stats">
           <div className="container grid grid-cols-2 md:grid-cols-4 gap-10">
-            {STATS.map((s, i) => (
+            {stats.map((s, i) => (
               <Reveal key={s.label} delay={i * 80} className="text-center">
                 <p className="text-4xl md:text-5xl font-semibold gold-text" style={{ fontFamily: 'var(--font-heading)' }}>
                   <CountUp value={s.value} />
@@ -329,7 +362,7 @@ export default async function HomePage() {
               </h2>
             </Reveal>
             <div className="mt-12 grid md:grid-cols-3 gap-6">
-              {TESTIMONIALS.map((t, i) => (
+              {testimonialList.map((t, i) => (
                 <Reveal key={i} delay={i * 80}>
                   <figure className="card-22 bg-secondary/60 border border-border p-8 h-full flex flex-col" data-testid={`testimonial-${i}`}>
                     <Quote size={26} className="text-amber-600" />
@@ -399,7 +432,7 @@ export default async function HomePage() {
               </h2>
             </Reveal>
             <div className="mt-10 space-y-3">
-              {FAQS.map((f, i) => (
+              {faqList.map((f, i) => (
                 <Reveal key={i} delay={i * 60}>
                   <details className="card-22 bg-secondary/50 border border-border px-6 py-1 group" data-testid={`faq-item-${i}`}>
                     <summary className="cursor-pointer list-none py-4 flex items-center justify-between font-semibold text-sm md:text-base">
