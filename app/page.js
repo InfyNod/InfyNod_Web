@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowRight, ArrowUpRight, Phone, Mail, MapPin, Quote, Star } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, Phone, Mail, MapPin, Quote, Star, Bot, Zap, TrendingUp } from 'lucide-react'
 import { getServices, getProjects, getTeam, getBlogPosts, getSettings, getTestimonials, getFaqs, getProcessSteps } from '@/lib/db'
 import Nav from '@/components/site/Nav'
 import Footer from '@/components/site/Footer'
@@ -14,7 +14,77 @@ export const dynamic = 'force-dynamic'
 
 const INDUSTRIES = ['FinTech', 'HealthTech', 'Logistics', 'E-Commerce', 'EdTech', 'SaaS', 'Manufacturing', 'Real Estate']
 
-const TECH = ['OpenAI', 'LangChain', 'Python', 'TensorFlow', 'Next.js', 'React', 'Node.js', 'TypeScript', 'MongoDB', 'React Native', 'Flutter', 'AWS']
+const TECH = [
+  'AI & Machine Learning | OpenAI, Claude, LangChain, Python, TensorFlow, Hugging Face',
+  'Frontend | Next.js, React, TypeScript, Tailwind CSS, Vue.js, Angular, Redux, Vite',
+  'Backend & Databases | Node.js, Express, NestJS, FastAPI, Django, MongoDB, PostgreSQL, MySQL, Redis, Firebase',
+  'Mobile Apps | React Native, Flutter, Expo, Android, Swift, Kotlin',
+  'Cloud & DevOps | AWS, Docker, Kubernetes, GitHub Actions, Vercel, Nginx',
+  'Digital Marketing | Google Analytics, Google Ads, Meta Ads, Search Console, Semrush, Mailchimp, HubSpot, WordPress',
+]
+
+const TECH_ICONS = {
+  'openai': 'https://cdn.jsdelivr.net/npm/simple-icons@13/icons/openai.svg',
+  'claude': 'https://cdn.simpleicons.org/claude',
+  'langchain': 'https://cdn.simpleicons.org/langchain',
+  'python': 'https://cdn.simpleicons.org/python',
+  'tensorflow': 'https://cdn.simpleicons.org/tensorflow',
+  'next.js': 'https://cdn.simpleicons.org/nextdotjs',
+  'react': 'https://cdn.simpleicons.org/react',
+  'react native': 'https://cdn.simpleicons.org/react',
+  'typescript': 'https://cdn.simpleicons.org/typescript',
+  'tailwind css': 'https://cdn.simpleicons.org/tailwindcss',
+  'node.js': 'https://cdn.simpleicons.org/nodedotjs',
+  'fastapi': 'https://cdn.simpleicons.org/fastapi',
+  'mongodb': 'https://cdn.simpleicons.org/mongodb',
+  'postgresql': 'https://cdn.simpleicons.org/postgresql',
+  'flutter': 'https://cdn.simpleicons.org/flutter',
+  'aws': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg',
+  'docker': 'https://cdn.simpleicons.org/docker',
+  'kubernetes': 'https://cdn.simpleicons.org/kubernetes',
+  'github actions': 'https://cdn.simpleicons.org/githubactions',
+  'hugging face': 'https://cdn.simpleicons.org/huggingface',
+  'vue.js': 'https://cdn.simpleicons.org/vuedotjs',
+  'angular': 'https://cdn.simpleicons.org/angular',
+  'redux': 'https://cdn.simpleicons.org/redux',
+  'vite': 'https://cdn.simpleicons.org/vite',
+  'express': 'https://cdn.simpleicons.org/express',
+  'nestjs': 'https://cdn.simpleicons.org/nestjs',
+  'django': 'https://cdn.simpleicons.org/django',
+  'mysql': 'https://cdn.simpleicons.org/mysql',
+  'redis': 'https://cdn.simpleicons.org/redis',
+  'firebase': 'https://cdn.simpleicons.org/firebase',
+  'graphql': 'https://cdn.simpleicons.org/graphql',
+  'expo': 'https://cdn.simpleicons.org/expo',
+  'android': 'https://cdn.simpleicons.org/android',
+  'swift': 'https://cdn.simpleicons.org/swift',
+  'kotlin': 'https://cdn.simpleicons.org/kotlin',
+  'vercel': 'https://cdn.simpleicons.org/vercel',
+  'nginx': 'https://cdn.simpleicons.org/nginx',
+  'google analytics': 'https://cdn.simpleicons.org/googleanalytics',
+  'google ads': 'https://cdn.simpleicons.org/googleads',
+  'meta ads': 'https://cdn.simpleicons.org/meta',
+  'search console': 'https://cdn.simpleicons.org/googlesearchconsole',
+  'semrush': 'https://cdn.simpleicons.org/semrush',
+  'mailchimp': 'https://cdn.simpleicons.org/mailchimp',
+  'hubspot': 'https://cdn.simpleicons.org/hubspot',
+  'wordpress': 'https://cdn.simpleicons.org/wordpress',
+}
+
+function parseTechCategories(lines) {
+  const cats = []
+  const flat = []
+  for (const line of lines || []) {
+    if (String(line).includes('|')) {
+      const [name, ...rest] = String(line).split('|')
+      cats.push({ name: name.trim(), items: rest.join('|').split(',').map((x) => x.trim()).filter(Boolean) })
+    } else if (String(line).trim()) {
+      flat.push(String(line).trim())
+    }
+  }
+  if (flat.length) cats.push({ name: 'Technologies', items: flat })
+  return cats
+}
 
 const STATS = [
   { value: '50+', label: 'Projects shipped' },
@@ -42,65 +112,104 @@ function SectionTag({ num, label }) {
 }
 
 function HeroVisual() {
+  const inputNodes = [90, 160, 230, 300]
+  const outputNodes = [110, 195, 280]
   return (
-    <div className="relative w-full max-w-[540px] mx-auto mt-6 md:mt-0" aria-hidden="true">
+    <div className="relative w-full max-w-[560px] mx-auto mt-6 md:mt-0" aria-hidden="true">
       {/* Gold glow blob */}
-      <div className="absolute -inset-10 -z-10 rounded-full bg-[radial-gradient(circle,rgba(212,160,23,0.22),transparent_65%)] blur-2xl" />
-      {/* Orbit rings behind */}
-      <div className="absolute -inset-10 opacity-70 pointer-events-none">
-        <svg viewBox="0 0 400 400" className="w-full h-full">
+      <div className="absolute -inset-10 -z-10 rounded-full bg-[radial-gradient(circle,rgba(212,160,23,0.25),transparent_65%)] blur-2xl" />
+
+      {/* AI neural-network board */}
+      <div className="relative card-22 bg-[#0d0c09] border-[5px] border-white shadow-2xl gold-glow overflow-hidden">
+        <svg viewBox="0 0 520 400" className="w-full h-auto block">
           <defs>
-            <linearGradient id="og" x1="0" y1="0" x2="400" y2="400" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#8a5a08" />
+            <linearGradient id="og2" x1="0" y1="0" x2="520" y2="400" gradientUnits="userSpaceOnUse">
+              <stop stopColor="#9a6a0a" />
               <stop offset="0.5" stopColor="#d4a017" />
               <stop offset="1" stopColor="#eec453" />
             </linearGradient>
           </defs>
-          <g className="orbit-ring-2" style={{ transformBox: 'fill-box' }}>
-            <circle cx="200" cy="200" r="190" fill="none" stroke="#dcc98f" strokeWidth="1.2" strokeDasharray="3 8" />
-            <circle cx="200" cy="10" r="7" fill="url(#og)" />
-            <circle cx="390" cy="200" r="5" fill="#111" className="pulse-node" />
-          </g>
-          <g className="orbit-ring-3" style={{ transformBox: 'fill-box' }}>
-            <circle cx="200" cy="200" r="150" fill="none" stroke="#e6d7ac" strokeWidth="1" strokeDasharray="2 7" />
-            <circle cx="350" cy="200" r="6" fill="url(#og)" className="pulse-node" />
-          </g>
-        </svg>
-      </div>
 
-      {/* Main image frame */}
-      <div className="relative card-22 img-zoom overflow-hidden border-[5px] border-white shadow-2xl gold-glow">
-        <img
-          src="https://images.unsplash.com/photo-1681164315430-6159b2361615?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200"
-          alt="Indian engineering team at Infynod building AI-powered products"
-          className="w-full h-[340px] md:h-[400px] object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+          {/* background grid dots */}
+          {[...Array(6)].map((_, r) =>
+            [...Array(8)].map((_, c) => (
+              <circle key={`${r}-${c}`} cx={40 + c * 64} cy={40 + r * 64} r="1.3" fill="#ffffff" opacity="0.07" />
+            ))
+          )}
+
+          {/* orbit ring */}
+          <g className="orbit-ring-2" style={{ transformBox: 'fill-box' }}>
+            <circle cx="260" cy="195" r="150" fill="none" stroke="#d4a017" strokeOpacity="0.25" strokeWidth="1" strokeDasharray="3 8" />
+            <circle cx="260" cy="45" r="4" fill="url(#og2)" />
+            <circle cx="410" cy="195" r="3" fill="#fff" opacity="0.5" className="pulse-node" />
+          </g>
+
+          {/* connections: inputs -> core */}
+          {inputNodes.map((y, i) => (
+            <line key={`in-${i}`} x1="82" y1={y} x2="216" y2="195" stroke="#d4a017" strokeOpacity="0.55" strokeWidth="1.4" className="dash-flow" style={{ animationDelay: `${i * 0.25}s` }} />
+          ))}
+          {/* connections: core -> outputs */}
+          {outputNodes.map((y, i) => (
+            <line key={`out-${i}`} x1="304" y1="195" x2="438" y2={y} stroke="#eec453" strokeOpacity="0.6" strokeWidth="1.4" className="dash-flow" style={{ animationDelay: `${i * 0.35}s` }} />
+          ))}
+
+          {/* input nodes */}
+          {inputNodes.map((y, i) => (
+            <g key={`inode-${i}`}>
+              <circle cx="70" cy={y} r="11" fill="#1c1810" stroke="#d4a017" strokeWidth="1.4" />
+              <circle cx="70" cy={y} r="4" fill="url(#og2)" className="node-blink" style={{ animationDelay: `${i * 0.4}s` }} />
+            </g>
+          ))}
+          <text x="70" y="345" textAnchor="middle" fill="#ffffff" opacity="0.4" fontSize="10" style={{ fontFamily: 'var(--font-mono)' }}>YOUR DATA</text>
+
+          {/* AI core */}
+          <circle cx="260" cy="195" r="62" fill="url(#og2)" opacity="0.14" className="core-glow" />
+          <rect x="212" y="147" width="96" height="96" rx="26" fill="url(#og2)" />
+          <text x="260" y="207" textAnchor="middle" fill="#ffffff" fontSize="34" fontWeight="700" style={{ fontFamily: 'var(--font-heading)' }}>AI</text>
+          <text x="260" y="345" textAnchor="middle" fill="#ffffff" opacity="0.4" fontSize="10" style={{ fontFamily: 'var(--font-mono)' }}>INFYNOD ENGINE</text>
+
+          {/* output nodes */}
+          {outputNodes.map((y, i) => (
+            <g key={`onode-${i}`}>
+              <circle cx="450" cy={y} r="11" fill="#1c1810" stroke="#eec453" strokeWidth="1.4" />
+              <circle cx="450" cy={y} r="4" fill="url(#og2)" className="node-blink" style={{ animationDelay: `${0.2 + i * 0.5}s` }} />
+            </g>
+          ))}
+          <text x="450" y="345" textAnchor="middle" fill="#ffffff" opacity="0.4" fontSize="10" style={{ fontFamily: 'var(--font-mono)' }}>GROWTH</text>
+        </svg>
+
+        <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/70 to-transparent pointer-events-none" />
         <div className="absolute bottom-4 left-5 text-white">
-          <p className="text-[11px] text-amber-300" style={{ fontFamily: 'var(--font-mono)' }}>infynod.ai( idea )</p>
-          <p className="text-sm font-semibold mt-0.5">AI products, shipped from Pune</p>
+          <p className="text-[11px] text-amber-300" style={{ fontFamily: 'var(--font-mono)' }}>infynod.ai( business )</p>
+          <p className="text-sm font-semibold mt-0.5">Intelligence built into everything we ship</p>
         </div>
       </div>
 
-      {/* Floating chip — Lighthouse score */}
-      <div className="absolute -left-4 md:-left-10 top-8 float-a card-22 bg-white border border-border shadow-xl px-5 py-3.5">
-        <p className="text-2xl font-semibold gold-text" style={{ fontFamily: 'var(--font-heading)' }}>95+</p>
-        <p className="text-[11px] text-muted-foreground font-medium">Lighthouse score</p>
+      {/* Floating capability pills */}
+      <div className="absolute -left-4 md:-left-10 top-8 float-a card-22 bg-white border border-border shadow-xl px-4 py-3 flex items-center gap-2.5">
+        <span className="w-8 h-8 rounded-xl gold-bg text-white flex items-center justify-center"><Bot size={16} /></span>
+        <div>
+          <p className="text-sm font-semibold leading-none" style={{ fontFamily: 'var(--font-heading)' }}>AI Chatbots</p>
+          <p className="text-[10px] text-muted-foreground mt-1">Trained on your data</p>
+        </div>
+      </div>
+
+      <div className="absolute -right-1 md:-right-6 top-2 float-b card-22 bg-white border border-border shadow-xl px-4 py-3 flex items-center gap-2.5" style={{ animationDelay: '1.2s' }}>
+        <span className="w-8 h-8 rounded-xl bg-foreground text-white flex items-center justify-center"><Zap size={15} /></span>
+        <div>
+          <p className="text-sm font-semibold leading-none" style={{ fontFamily: 'var(--font-heading)' }}>Automation</p>
+          <p className="text-[10px] text-muted-foreground mt-1">24/7 workflows</p>
+        </div>
       </div>
 
       {/* Floating chip — delivery velocity mini chart */}
-      <div className="absolute -right-2 md:-right-8 -bottom-10 float-b card-22 bg-[#0d0c09] text-white shadow-2xl px-5 py-4">
-        <p className="text-[10px] text-white/60 mb-2" style={{ fontFamily: 'var(--font-mono)' }}>DELIVERY VELOCITY</p>
+      <div className="absolute -right-2 md:-right-8 -bottom-10 float-b card-22 bg-white border border-border shadow-2xl px-5 py-4">
+        <p className="text-[10px] text-muted-foreground mb-2 flex items-center gap-1.5" style={{ fontFamily: 'var(--font-mono)' }}><TrendingUp size={11} className="text-amber-600" /> BUSINESS IMPACT</p>
         <div className="flex items-end gap-1.5 h-12">
           {[35, 55, 45, 70, 60, 85, 100].map((h, i) => (
             <span key={i} className="w-2.5 rounded-t-sm gold-bg bar-anim" style={{ height: `${h}%`, animationDelay: `${i * 120}ms` }} />
           ))}
         </div>
-      </div>
-
-      {/* Floating chip — projects */}
-      <div className="absolute -right-1 md:-right-6 top-2 float-b card-22 bg-white border border-border shadow-xl px-4 py-2.5" style={{ animationDelay: '1.2s' }}>
-        <p className="text-lg font-semibold" style={{ fontFamily: 'var(--font-heading)' }}>50+ <span className="text-[11px] font-normal text-muted-foreground">projects shipped</span></p>
       </div>
     </div>
   )
@@ -120,7 +229,7 @@ export default async function HomePage() {
 
   // Admin-editable content with safe fallbacks
   const industries = settings?.industries?.length ? settings.industries : INDUSTRIES
-  const tech = settings?.tech_stack?.length ? settings.tech_stack : TECH
+  const techCategories = parseTechCategories(settings?.tech_stack?.length ? settings.tech_stack : TECH)
   const stats = settings?.stats?.length ? settings.stats : STATS
   const testimonialList = testimonials?.length ? testimonials : TESTIMONIALS
   const faqList = faqs?.length ? faqs.map((f) => ({ q: f.question, a: f.answer })) : FAQS
@@ -156,10 +265,10 @@ export default async function HomePage() {
               </span>
               <p className="mt-6 section-tag text-amber-700">{settings?.hero_tag || 'AI-First Software Development Company · Pune, India'}</p>
               <h1 className="mt-4 text-4xl md:text-6xl font-semibold leading-[1.06] tracking-tight">
-                {settings?.hero_heading || 'We build AI-powered digital products that'} <span className="gold-text-shimmer">{settings?.hero_highlight || 'move business forward'}</span>
+                {settings?.hero_heading || 'Supercharge your business with'} <span className="gold-text-shimmer">{settings?.hero_highlight || 'AI-powered software'}</span>
               </h1>
               <p className="mt-6 text-lg text-muted-foreground max-w-lg leading-relaxed">
-                {settings?.hero_subtext || 'AI solutions, intelligent automation, custom software, web and mobile apps — designed, built and scaled by an Indian team that treats your product like its own.'}
+                {settings?.hero_subtext || 'AI chatbots, intelligent automation, predictive analytics and full-scale digital platforms — we design, build and scale AI solutions that cut costs and multiply growth.'}
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-4">
                 <Link href="/contact" className="pill gold-bg text-white font-semibold px-7 py-3.5 inline-flex items-center gap-2 hover:opacity-90 transition-opacity gold-glow" data-testid="hero-cta-primary">
@@ -248,7 +357,7 @@ export default async function HomePage() {
             <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {(projects || []).map((p, i) => (
                 <Reveal key={p.id} delay={i * 80}>
-                  <div className="card-22 hover-lift img-zoom bg-white border border-border overflow-hidden h-full flex flex-col hover:border-amber-500/50 transition-colors" data-testid={`project-card-${i}`}>
+                  <Link href={p.slug ? `/projects/${p.slug}` : '/#projects'} className="group card-22 hover-lift img-zoom bg-white border border-border overflow-hidden h-full flex flex-col hover:border-amber-500/50 transition-colors" data-testid={`project-card-${i}`}>
                     {p.image_url ? (
                       <div className="h-44 overflow-hidden relative">
                         <img src={p.image_url} alt={p.title} loading="lazy" className="w-full h-full object-cover" />
@@ -258,7 +367,7 @@ export default async function HomePage() {
                     <div className="p-7 flex flex-col flex-1">
                       <div className="flex items-center justify-between">
                         {!p.image_url && <span className="pill bg-accent text-amber-800 text-xs font-semibold px-3 py-1">{p.category}</span>}
-                        <h3 className="text-2xl font-semibold">{p.title}</h3>
+                        <h3 className="text-2xl font-semibold group-hover:gold-text transition-all">{p.title}</h3>
                         <span className="text-xs text-muted-foreground" style={{ fontFamily: 'var(--font-mono)' }}>0{i + 1}</span>
                       </div>
                       <p className="mt-2.5 text-sm text-muted-foreground leading-relaxed flex-1">{p.description}</p>
@@ -267,8 +376,13 @@ export default async function HomePage() {
                           <span key={t} className="text-[11px] text-foreground/60 bg-secondary px-2.5 py-1 rounded-full" style={{ fontFamily: 'var(--font-mono)' }}>{t}</span>
                         ))}
                       </div>
+                      {p.slug && (
+                        <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-amber-700">
+                          View case study <ArrowUpRight size={15} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                        </span>
+                      )}
                     </div>
-                  </div>
+                  </Link>
                 </Reveal>
               ))}
             </div>
@@ -300,15 +414,33 @@ export default async function HomePage() {
                 Modern tools, <span className="gold-text">battle-tested</span>
               </h2>
             </Reveal>
-            <Reveal delay={100}>
-              <div className="mt-12 flex flex-wrap gap-3">
-                {tech.map((t) => (
-                  <span key={t} className="pill bg-white border border-border px-5 py-2.5 text-sm font-medium hover:border-amber-500/50 transition-colors" style={{ fontFamily: 'var(--font-mono)' }}>
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </Reveal>
+            <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {techCategories.map((cat, ci) => (
+                <Reveal key={cat.name} delay={ci * 80}>
+                  <div className={`card-22 hover-lift bg-white border p-7 h-full ${ci === 0 ? 'border-amber-500/50 gold-glow' : 'border-border'}`} data-testid={`tech-category-${ci}`}>
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-semibold text-lg">{cat.name}</h3>
+                      <span className="text-xs text-muted-foreground" style={{ fontFamily: 'var(--font-mono)' }}>0{ci + 1}</span>
+                    </div>
+                    <div className="mt-5 grid grid-cols-2 gap-2.5">
+                      {cat.items.map((t) => {
+                        const icon = TECH_ICONS[t.toLowerCase()]
+                        return (
+                          <div key={t} className="flex items-center gap-2.5 rounded-xl bg-secondary/60 border border-border/60 px-3 py-2.5 hover:border-amber-500/40 transition-colors">
+                            {icon ? (
+                              <img src={icon} alt={t} loading="lazy" className="w-5 h-5 object-contain shrink-0" />
+                            ) : (
+                              <span className="w-5 h-5 rounded-md gold-bg text-white text-[10px] font-bold flex items-center justify-center shrink-0">{t[0]}</span>
+                            )}
+                            <span className="text-xs font-semibold leading-tight">{t}</span>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
           </div>
         </section>
 

@@ -17,6 +17,7 @@ const CONFIGS = {
       { key: 'tools', label: 'Tools & technologies (one per line)', type: 'array' },
       { key: 'outcomes', label: 'Outcomes / What you get (one per line)', type: 'array' },
       { key: 'icon', label: 'Icon (code/globe/smartphone/pen/cloud/sparkles)', type: 'text' },
+      { key: 'image_url', label: 'Page image URL', type: 'text' },
       { key: 'order', label: 'Order', type: 'number' },
       { key: 'active', label: 'Active', type: 'checkbox' },
     ],
@@ -26,8 +27,14 @@ const CONFIGS = {
     label: 'Projects', icon: FolderKanban,
     fields: [
       { key: 'title', label: 'Title', type: 'text' },
+      { key: 'slug', label: 'Slug (for case study URL, e.g. finsight)', type: 'text' },
       { key: 'category', label: 'Category', type: 'text' },
-      { key: 'description', label: 'Description', type: 'textarea' },
+      { key: 'industry', label: 'Industry', type: 'text' },
+      { key: 'duration', label: 'Duration (e.g. 10 weeks)', type: 'text' },
+      { key: 'description', label: 'Short description', type: 'textarea' },
+      { key: 'challenge', label: 'Case study — The Challenge', type: 'textarea' },
+      { key: 'solution', label: 'Case study — Our Solution', type: 'textarea' },
+      { key: 'results', label: 'Case study — Results (one per line)', type: 'array' },
       { key: 'tech', label: 'Tech stack (one per line)', type: 'array' },
       { key: 'external_link', label: 'External link', type: 'text' },
       { key: 'image_url', label: 'Image URL', type: 'text' },
@@ -519,7 +526,7 @@ function SettingsPanel({ token, onAuthError }) {
             <textarea rows={8} value={form.industries} onChange={(e) => setForm((p) => ({ ...p, industries: e.target.value }))} className={inputCls} data-testid="settings-industries" />
           </div>
           <div>
-            <label className="text-xs font-semibold text-foreground/70 mb-1.5 block">Tech stack badges</label>
+            <label className="text-xs font-semibold text-foreground/70 mb-1.5 block">Tech stack — format: Category | item1, item2 (one category per line)</label>
             <textarea rows={8} value={form.tech_stack} onChange={(e) => setForm((p) => ({ ...p, tech_stack: e.target.value }))} className={inputCls} data-testid="settings-tech-stack" />
           </div>
           <div className="md:col-span-2">

@@ -62,9 +62,14 @@ export default async function ServicePage({ params }) {
               </div>
             </div>
 
-            {/* Outcomes card */}
-            {(service.outcomes || []).length > 0 && (
-              <div className="lg:col-span-5">
+            {/* Image + Outcomes */}
+            <div className="lg:col-span-5 space-y-6">
+              {service.image_url && (
+                <div className="card-22 img-zoom overflow-hidden border-[5px] border-white shadow-2xl gold-glow" data-testid="service-image">
+                  <img src={service.image_url} alt={service.title} className="w-full h-56 md:h-64 object-cover" />
+                </div>
+              )}
+              {(service.outcomes || []).length > 0 && (
                 <div className="card-22 bg-[#0d0c09] text-white p-8 md:p-9 gold-glow" data-testid="service-outcomes">
                   <p className="text-xs font-semibold tracking-[0.18em] uppercase text-amber-400/90">What you get</p>
                   <ul className="mt-6 space-y-4">
@@ -78,8 +83,8 @@ export default async function ServicePage({ params }) {
                     ))}
                   </ul>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
 

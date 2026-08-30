@@ -194,12 +194,11 @@ frontend:
 metadata:
   created_by: "main_agent"
   version: "1.0"
-  test_sequence: 3
+  test_sequence: 4
   run_ui: false
 
 test_plan:
-  current_focus:
-    - "Admin-editable home content: testimonials/faqs/process_steps collections + extended settings"
+  current_focus: []
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -293,3 +292,67 @@ agent_communication:
       message: "Test AI theme changes on home page only (quick pass): hero badge text, AI-first tag/heading/subtext, Indian team hero image loads (unsplash photo-1681164315430), first service card is AI & Automation, tech stack starts with OpenAI/LangChain. No lead submissions needed. No admin changes needed."
     - agent: "testing"
       message: "✅ AI-FIRST THEME VERIFICATION COMPLETE - ALL TESTS PASSED (10/10). Verified: (1) Hero availability badge 'Available for new AI projects', (2) Section tag 'AI-FIRST SOFTWARE DEVELOPMENT COMPANY · PUNE, INDIA', (3) H1 with gold highlight 'move business forward', (4) Hero subtext mentions AI solutions/intelligent automation and Indian team, (5) Hero image photo-1681164315430 loads with overlays 'infynod.ai( idea )' and 'AI products, shipped from Pune', (6) All 3 floating chips (95+ Lighthouse, 50+ projects, DELIVERY VELOCITY chart with 7 bars), (7) Services section has 6 cards with AI & Automation first (data-testid verified), (8) Tech stack first 4 badges: OpenAI, LangChain, Python, TensorFlow, (9) Nav and footer render, (10) /services/ai-automation page loads correctly. Minor console warnings (hydration mismatch, font preload) are non-breaking. Website is production-ready with AI-first theme."
+
+  - task: "Design v4: AI hero infographic, new fonts (Sora/Jakarta), WhatsApp button, case study pages, services images"
+    implemented: true
+    working: true
+    file: "/app/app/page.js, /app/app/layout.js, /app/components/site/WhatsAppButton.js, /app/app/projects/[slug]/page.js, /app/app/services/[slug]/page.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Hero now animated AI neural-network SVG (no photo) + powerful copy 'Supercharge your business with AI-powered software'. Fonts switched to Sora (headings) + Plus Jakarta Sans (body). Floating WhatsApp button site-wide (hidden on /admin) -> wa.me/919765303735. New /projects/[slug] case study pages (5 slugs: finsight, mediqueue, freightflow, retailpulse, hireloop) with challenge/solution/results from DB. Home project cards now link to case studies. Services detail pages have hero image. Admin projects config has case-study fields; services config has image_url. Sitemap includes projects."
+        - working: true
+          agent: "testing"
+          comment: "✅ ALL DESIGN V4 TESTS PASSED (100% success). HOME HERO: H1 text 'Supercharge your business with AI-powered software' with gold highlight on 'AI-powered software' ✓. Fonts verified: H1 uses Sora, body uses Plus Jakarta Sans ✓. AI neural-network SVG board present with dark background, center 'AI' text, all 3 labels (YOUR DATA, INFYNOD ENGINE, GROWTH) ✓. All 3 floating chips present: 'AI Chatbots', 'Automation', 'BUSINESS IMPACT' with 7-bar chart ✓. Hero availability badge 'Available for new AI projects' ✓. Hero trust row with 5 stars 'Trusted by 30+ clients' ✓. WHATSAPP BUTTON: Visible on home and /contact with correct href (wa.me/919765303735) ✓. NOT rendered on /admin ✓. CASE STUDIES: project-card-0 links to /projects/finsight ✓. FinSight case study page loads with title, meta pills (FinTech, 10 weeks), hero image loads, challenge/solution/results sections with 5 result items ✓. 'Built with' tech pills, 'More case studies' cards (3), CTA banner all present ✓. Direct visit /projects/mediqueue works with title 'MediQueue' ✓. Invalid slug /projects/nonexistent returns 404 page ✓. SERVICES PAGE: /services/ai-automation has service-image element with loaded image ✓. Outcomes card, tools section, engagement models all present ✓. ADMIN FIELDS: Projects tab edit form shows all 6 new fields (field-slug, field-industry, field-duration, field-challenge, field-solution, field-results) ✓. Services tab edit form shows field-image_url ✓. No changes saved. REGRESSION: /blog, /about, /careers all load correctly ✓. Nav works with 6 links ✓. No page-breaking console errors (only minor 502s for external resources) ✓. All functionality working perfectly."
+
+agent_communication:
+    - agent: "main"
+      message: "User approved frontend testing. Test: hero AI SVG board renders (AI core, YOUR DATA/INFYNOD ENGINE/GROWTH labels, chips), h1 new copy, WhatsApp button visible on home + /contact but NOT on /admin, project card links to /projects/finsight, case study page sections (challenge/solution/results/tech/CTA), service page image (data-testid service-image), admin projects form has new fields. NO lead submissions needed. Don't change admin password."
+    - agent: "testing"
+      message: "✅ DESIGN V4 COMPREHENSIVE UI TESTING COMPLETE - ALL TESTS PASSED (100% success rate). Verified: (1) HOME HERO - H1 text correct with gold highlight, Sora font for headings, Plus Jakarta Sans for body, AI SVG with all labels and center AI text, 3 floating chips with 7-bar chart, availability badge, trust row with 5 stars. (2) WHATSAPP BUTTON - Correct href (wa.me/919765303735), visible on / and /contact, NOT rendered on /admin. (3) CASE STUDIES - project-card-0 links to /projects/finsight, FinSight page loads with all sections (title, meta pills, hero image, challenge, solution, results with 5 items, built with tech pills, more case studies cards, CTA banner), /projects/mediqueue direct visit works, invalid slug returns 404. (4) SERVICES PAGE - service-image present and loads on /services/ai-automation, outcomes/tools/engagement sections present. (5) ADMIN FIELDS - Projects form has all 6 new fields (slug, industry, duration, challenge, solution, results), Services form has image_url field. (6) REGRESSION - /blog, /about, /careers load, nav works, no breaking errors. No lead submissions made. Admin password unchanged. Website is production-ready with all Design v4 features working correctly."
+
+  - task: "Tech stack section: categorized cards with brand icons"
+    implemented: true
+    working: true
+    file: "/app/app/page.js (section 07), /app/app/admin/page.js, /app/lib/seedData.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Tech stack now 5 category cards (AI & ML highlighted gold, Frontend, Backend & DBs, Mobile, Cloud & DevOps) with real brand icons (simpleicons CDN + jsdelivr for OpenAI/AWS). Admin-editable via settings.tech_stack lines 'Category | item1, item2'. Fixed hydration warning with suppressHydrationWarning on html. Main agent verified 19/19 icons load + 0 console errors via playwright."
+        - working: true
+          agent: "testing"
+          comment: "✅ ALL TECH STACK TESTS PASSED (10/10): HEADING - 'Modern tools, battle-tested' verified correctly. CATEGORY CARDS - Exactly 5 cards found with correct data-testids (tech-category-0 through tech-category-4) and titles: 'AI & Machine Learning', 'Frontend', 'Backend & Databases', 'Mobile Apps', 'Cloud & DevOps'. FIRST CARD STYLING - AI & Machine Learning card has gold/amber border (border-amber-500/50 gold-glow class) and contains all expected items: OpenAI, Claude, LangChain, Python, TensorFlow. ICON LOADING - All 19/19 icons loaded successfully (complete && naturalWidth > 0). CONSOLE ERRORS - Zero console errors detected on home page load (hydration warning fix confirmed working). REGRESSION CHECKS - Hero h1 'Supercharge your business with AI-powered software' present, WhatsApp button visible, contact section present. Screenshot confirms visual implementation is perfect with subtle gold glow on first card and all brand logos displaying correctly. No issues found."
+
+
+agent_communication:
+    - agent: "main"
+      message: "Quick focused UI test for Tech Stack section update. Verify: heading 'Modern tools, battle-tested', exactly 5 category cards (tech-category-0 to tech-category-4) with correct titles, first card (AI & ML) has gold border + contains OpenAI/Claude/LangChain/Python/TensorFlow, all 19 icons load, zero console errors (hydration fix), quick regression (hero/WhatsApp/contact). No login, no form submissions needed."
+    - agent: "testing"
+      message: "✅ TECH STACK SECTION UI TEST COMPLETE - ALL TESTS PASSED (10/10, 100% success rate). Verified: (1) Heading 'Modern tools, battle-tested' correct. (2) Exactly 5 category cards with correct data-testids and titles: AI & Machine Learning, Frontend, Backend & Databases, Mobile Apps, Cloud & DevOps. (3) First card has gold/amber border styling (border-amber-500/50 gold-glow) and contains all 5 expected items: OpenAI, Claude, LangChain, Python, TensorFlow. (4) All 19/19 icons loaded successfully (complete && naturalWidth > 0). (5) Zero console errors on home page load - hydration warning fix confirmed working. (6) Regression checks passed: Hero h1 'Supercharge your business with AI-powered software' present, WhatsApp button visible, contact section present. Screenshot confirms visual implementation is perfect with subtle gold glow on first card and all brand logos displaying correctly. No issues found. Feature is production-ready."
+
+  - task: "Tech stack expanded: 6 categories, 44 brand icons, Digital Marketing added"
+    implemented: true
+    working: true
+    file: "/app/app/page.js, /app/lib/seedData.js (DB settings.tech_stack updated)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Frontend category now 8 items (added Vue.js, Angular, Redux, Vite), Backend & Databases 10 items (added Express, NestJS, Django, MySQL, Redis, Firebase), Mobile 6, Cloud 6 (added Vercel, Nginx), AI&ML 6 (added Hugging Face), NEW Digital Marketing category (Google Analytics, Google Ads, Meta Ads, Search Console, Semrush, Mailchimp, HubSpot, WordPress). Main agent playwright check: 6 categories, 44/44 icons loaded, 0 console errors."
+        - working: true
+          agent: "testing"
+          comment: "✅ ALL TECH STACK EXPANSION TESTS PASSED (100% success). VERIFIED: (1) Exactly 6 category cards found with correct data-testids (tech-category-0 through tech-category-5). (2) Category names in correct order: AI & Machine Learning (card 0 with gold border ✅), Frontend, Backend & Databases, Mobile Apps, Cloud & DevOps, Digital Marketing. (3) Item counts all correct: AI & ML = 6/6 (includes Hugging Face ✅), Frontend = 8/8 (includes Vue.js, Angular, Redux, Vite ✅), Backend & Databases = 10/10 (includes Express, NestJS, Django, MySQL, Redis, Firebase ✅), Mobile Apps = 6/6, Cloud & DevOps = 6/6 (includes Vercel, Nginx ✅), Digital Marketing = 8/8 (includes Google Analytics, Google Ads, Meta Ads, Search Console, Semrush, Mailchimp, HubSpot, WordPress ✅). (4) All 44/44 icons loaded successfully (complete && naturalWidth > 0). (5) Zero console errors detected. (6) Regression checks passed: Hero h1 'Supercharge your business with AI-powered software' correct, WhatsApp button visible. Screenshot confirms perfect visual implementation with gold border on first card and all brand logos displaying correctly. Feature is production-ready."
+
+agent_communication:
+    - agent: "main"
+      message: "Verify tech stack section on home: 6 category cards (data-testid tech-category-0..5), category names AI & Machine Learning / Frontend / Backend & Databases / Mobile Apps / Cloud & DevOps / Digital Marketing, icon images all load (naturalWidth>0), Digital Marketing has 8 items. No lead submissions. No admin changes."
+    - agent: "testing"
+      message: "✅ TECH STACK EXPANSION UI TEST COMPLETE - ALL TESTS PASSED (100% success rate). Verified: (1) Exactly 6 category cards with correct data-testids and names in order. (2) First card (AI & Machine Learning) has gold border styling. (3) All item counts correct: AI & ML 6 (with Hugging Face), Frontend 8 (with Vue.js, Angular, Redux, Vite), Backend & Databases 10 (with Express, NestJS, Django, MySQL, Redis, Firebase), Mobile Apps 6, Cloud & DevOps 6 (with Vercel, Nginx), Digital Marketing 8 (all 8 items verified). (4) All 44 icons loaded successfully. (5) Zero console errors. (6) Regression checks passed (hero h1, WhatsApp button). Screenshot confirms visual implementation is perfect. No issues found. Feature is production-ready."

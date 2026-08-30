@@ -37,3 +37,13 @@ Theme: Gold & Black on light backgrounds, gold gradient accents. Fonts: Space Gr
 - Hero v3: availability badge (pulse dot), 5-star trust row, glow blob; section-tag font simplified (Manrope, not mono); body 16px optimizeLegibility
 - Migrations: /app/scripts/migrate.js (content collections), /app/scripts/migrate2.js (hr_phone + service extras) — both idempotent-ish, already run
 - Testing: backend 22/22 (new endpoints), frontend 100% pass incl. content-reflection round-trips
+
+## Update — Design v4 + Tech Stack v2 (DONE & TESTED)
+- Fonts: Sora (headings) + Plus Jakarta Sans (body) + JetBrains Mono
+- Hero: animated AI neural-network SVG infographic (YOUR DATA -> AI core -> GROWTH), copy "Supercharge your business with AI-powered software", capability chips (AI Chatbots/Automation/Business Impact)
+- WhatsApp floating button site-wide (wa.me/919765303735), hidden on /admin
+- Case study pages /projects/[slug] (finsight, mediqueue, freightflow, retailpulse, hireloop): challenge/solution/results/tech/CTA — admin-editable (projects fields: slug, industry, duration, challenge, solution, results[])
+- Services pages have hero image (image_url, admin-editable)
+- Tech stack: 6 admin-editable category cards ("Category | item1, item2" format in settings.tech_stack) with 44 brand icons (simpleicons CDN; OpenAI via jsdelivr npm simple-icons@13; AWS via devicon). Categories: AI&ML, Frontend(8), Backend&DBs(10), Mobile(6), Cloud&DevOps(6), Digital Marketing(8 — Google Analytics/Ads, Meta Ads, Search Console, Semrush, Mailchimp, HubSpot, WordPress)
+- suppressHydrationWarning on <html> (js-class script) — 0 console errors
+- Migrations run: migrate3.js (hero copy, service images, case studies). All testing-agent verified 100%.
