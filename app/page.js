@@ -241,7 +241,7 @@ export default async function HomePage() {
     url: process.env.NEXT_PUBLIC_BASE_URL,
     email: settings?.email,
     telephone: settings?.phone,
-    address: { '@type': 'PostalAddress', addressLocality: 'Pune', addressRegion: 'Maharashtra', addressCountry: 'IN' },
+    address: { '@type': 'PostalAddress', addressLocality: 'abc', addressRegion: 'Maharashtra', addressCountry: 'IN' },
     description: 'IT services and product company building custom software, web, mobile, cloud and AI solutions.',
   }
 
@@ -261,14 +261,14 @@ export default async function HomePage() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-60" />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
                 </span>
-                Available for new AI projects
+                {settings?.hero_availability || 'Available for new AI projects'}
               </span>
-              <p className="mt-6 section-tag text-amber-700">{settings?.hero_tag || 'AI-First Software Development Company · Pune, India'}</p>
+              <p className="mt-6 section-tag text-amber-700">{settings?.hero_tag ||'Infynod Tech — AI-First Software & Product Company, Pune'}</p>
               <h1 className="mt-4 text-4xl md:text-6xl font-semibold leading-[1.06] tracking-tight">
                 {settings?.hero_heading || 'Supercharge your business with'} <span className="gold-text-shimmer">{settings?.hero_highlight || 'AI-powered software'}</span>
               </h1>
               <p className="mt-6 text-lg text-muted-foreground max-w-lg leading-relaxed">
-                {settings?.hero_subtext || 'AI chatbots, intelligent automation, predictive analytics and full-scale digital platforms — we design, build and scale AI solutions that cut costs and multiply growth.'}
+                {settings?.hero_subtext ||'AI chatbots, intelligent automation, predictive analytics and full-scale digital platforms — we design, build and scale AI solutions that cut costs and multiply growth.'}
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-4">
                 <Link href="/contact" className="pill gold-bg text-white font-semibold px-7 py-3.5 inline-flex items-center gap-2 hover:opacity-90 transition-opacity gold-glow" data-testid="hero-cta-primary">
@@ -556,7 +556,7 @@ export default async function HomePage() {
 
         {/* 12 — FAQ */}
         <section className="py-20 md:py-28 bg-white border-y border-border" data-testid="section-faq">
-          <div className="container max-w-3xl">
+          <div className="container max-w-8xl">
             <Reveal>
               <SectionTag num="12" label="FAQ" />
               <h2 className="mt-3 text-3xl md:text-5xl font-semibold leading-tight">

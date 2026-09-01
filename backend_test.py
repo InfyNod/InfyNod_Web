@@ -583,13 +583,15 @@ def test_admin_update_settings(token: str):
         response = requests.put(
             f"{BASE_URL}/settings",
             headers={"Authorization": f"Bearer {token}"},
-            json={"address": "Pune, Maharashtra, India"},
+            json={"address": "Office No. 243, The Capital, Hadapsar, Pune – 411028, Maharashtra, India
+"},
             timeout=10
         )
         
         if response.status_code == 200:
             data = response.json()
-            if data.get("item", {}).get("address") == "Pune, Maharashtra, India":
+            if data.get("item", {}).get("address") == "Office No. 243, The Capital, Hadapsar, Pune – 411028, Maharashtra, India
+":
                 log_test("Admin: PUT /settings updates data", True)
             else:
                 log_test("Admin: PUT /settings updates data", False, f"Address not updated: {data}")

@@ -5,7 +5,8 @@ Corporate website for Infynod Tech Pvt Ltd (IT services & product company, Pune,
 Theme: Gold & Black on light backgrounds, gold gradient accents. Fonts: Space Grotesk (headings 600), Manrope (body), JetBrains Mono. 22px card radius, pill buttons, custom SVG "Infynod" node wordmark logo.
 
 ## Contact (confirmed by user)
-- Phone: +91 97653 03735 | Email: info@infynod.com | Pune, Maharashtra, India
+- Phone: +91 97653 03735 | Email: info@infynod.com | Office No. 243, The Capital, Hadapsar, Pune – 411028, Maharashtra, India
+
 
 ## Built (Steps 1-4 + Design v2) — DONE & TESTED
 - 13-section SSR home: hero (image infographic + floating stat chips + animated bars + shimmer gold heading), trust marquee, services(6), scroll-driven process story(5 stages), projects(5, with images), interactive project planner (timeline estimator + contact prefill via CustomEvent), tech stack, count-up stats, team(4), testimonials(3), blog preview(3, cover images), FAQ(5), contact form

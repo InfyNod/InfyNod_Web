@@ -50,7 +50,7 @@ export default function Footer({ settings, services = [] }) {
                 <a href={`mailto:${settings?.email}`} className="hover:text-amber-300 transition-colors" data-testid="footer-email">{settings?.email}</a>
               </li>
               <li className="flex items-start gap-2.5 text-sm text-white/55">
-                <MapPin size={15} className="mt-0.5 text-amber-400" />
+                <MapPin size={30} className="mt-0.5 text-amber-400" />
                 <span data-testid="footer-address">{settings?.address}</span>
               </li>
             </ul>
@@ -62,7 +62,7 @@ export default function Footer({ settings, services = [] }) {
           <div className="flex items-center gap-6">
             <Link href="/privacy-policy" className="text-xs text-white/40 hover:text-amber-300 transition-colors">Privacy Policy</Link>
             <Link href="/terms" className="text-xs text-white/40 hover:text-amber-300 transition-colors">Terms of Service</Link>
-            <Link href="/admin" className="text-xs text-white/25 hover:text-white/50 transition-colors">Admin</Link>
+            {/* <Link href="/admin" className="text-xs text-white/25 hover:text-white/50 transition-colors">Admin</Link> */}
           </div>
         </div>
       </div>
