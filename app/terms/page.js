@@ -1,4 +1,5 @@
-import PageShell from '@/components/site/PageShell'
+import LegalPageShell from '@/components/site/LegalPageShell'
+
 
 export const metadata = {
   title: 'Terms of Service',
@@ -76,7 +77,7 @@ const SECTIONS = [
 
 export default function TermsPage() {
   return (
-    <PageShell>
+    <LegalPageShell>
       <div className="container max-w-8xl pb-24" data-testid="terms-page">
         <p className="section-tag text-amber-700">Legal</p>
         <h1 className="mt-4 text-4xl md:text-5xl font-semibold">Terms of <span className="gold-text">Service</span></h1>
@@ -90,6 +91,6 @@ export default function TermsPage() {
           ))}
         </div>
       </div>
-    </PageShell>
+    </LegalPageShell>
   )
 }
