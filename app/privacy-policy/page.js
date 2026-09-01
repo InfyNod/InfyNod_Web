@@ -60,7 +60,7 @@ const SECTIONS = [
 
 export default function PrivacyPage() {
   return (
-    <PageShell>
+    <LegalPageShell>
       <div className="container max-w-8xl pb-24" data-testid="privacy-page">
         <p className="section-tag text-amber-700">Legal</p>
         <h1 className="mt-4 text-4xl md:text-5xl font-semibold">Privacy <span className="gold-text">Policy</span></h1>
@@ -74,6 +74,6 @@ export default function PrivacyPage() {
           ))}
         </div>
       </div>
-    </PageShell>
+    </LegalPageShell>
   )
 }
