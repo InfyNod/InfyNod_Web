@@ -1,4 +1,4 @@
-import PageShell from '@/components/site/PageShell'
+import LegalPageShell from '@/components/site/LegalPageShell'
 
 export const metadata = {
   title: 'Privacy Policy',
